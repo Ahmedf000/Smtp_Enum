@@ -23,7 +23,7 @@ class Crypter:
 		return "The key => {}".format(self.key.hex())
 
 
-def send_encrypted_(s, message):
+def send_encrypted_(s, ,cipher, message):
 	s.send(cipher.encrypt(message)).encode()
 
 
@@ -43,7 +43,7 @@ def enum_smtp_banner(ip):
 
 
 
-def send_cmd(ip, user, command):
+def send_cmd(ip, user, command, cipher):
 	# the user is from the whoever uses script !!
 	lw = (command.upper()).encode()
 	if lw not in (b'VRFY', b'EXPN'):
@@ -68,12 +68,12 @@ def send_cmd(ip, user, command):
 def main():
 
 	parser = argparse.ArgumentParser(description='Enumerate SMTP protocol')
-	parser.add_argument("-i", "--ip", action="store_true", required=False,
+	parser.add_argument("-i", "--ip", required=False,
 						help=""" Enumrate target SMTP service - 
 						Usage: python smtp_enum.py -i 192.168.0.1 """)
-	parser.add_argument("-u", "--user", action="store_true", required=False,
+	parser.add_argument("-u", "--user", required=False,
 						help=""" Assign the user from the target IP """)
-	parser.add_argument("-c", "--command", action="store_true", required=False,
+	parser.add_argument("-c", "--command", required=False,
 						help=""" Assign the command to be used for target IP """)
 	parser.add_argument("-k", "--key", help="Encryption key", type=str, required=False)
 	args = parser.parse_args()
