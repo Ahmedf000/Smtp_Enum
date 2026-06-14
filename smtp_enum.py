@@ -24,7 +24,7 @@ class Crypter:
 
 
 def send_encrypted_(s, cipher, message):
-	s.send(cipher.encrypt(message)).encode()
+	s.send(cipher.encrypt(message).encode())
 
 
 
@@ -55,7 +55,7 @@ def send_cmd(ip, user, command, cipher):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.connect((ip, 25))
 		data_sent = lw + encoded_usr + b'\r\n'
-		send_encrypted_(s, data_sent)
+		send_encrypted_(s, cipher,data_sent)
 		info_ = s.recv(BUFFER).decode()
 		recv_decrypted = cipher.decrypt(info_)
 		print("User verification => {}".format(recv_decrypted))
