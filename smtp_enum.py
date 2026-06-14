@@ -23,7 +23,7 @@ class Crypter:
 		return "The key => {}".format(self.key.hex())
 
 
-def send_encrypted_(s, ,cipher, message):
+def send_encrypted_(s, cipher, message):
 	s.send(cipher.encrypt(message)).encode()
 
 
@@ -78,10 +78,6 @@ def main():
 	parser.add_argument("-k", "--key", help="Encryption key", type=str, required=False)
 	args = parser.parse_args()
 
-	if len(sys.argv) > 2:
-		print("Usage 1:  python smtp_enum.py -i 192.168.0.1")
-		print("Usage 2:  python smtp_enum.py -i 192.168.0.1 -u root -c VRFY")
-		sys.exit(1)
 
 	if args.ip and args.command and args.user and not args.key:
 		parser.error("Requires key to encrypt traffic (-key)")
@@ -93,11 +89,12 @@ def main():
 	print(cipher)
 
 
-	if args.ip:
+	if args.ip and args.user and args.command:
+		send_cmd(args.ip, args.user, args.command)
+
+	elif args.ip:
 		enum_smtp_banner(args.ip)
 
-	elif args.ip and args.command and args.user and args.key:
-		send_cmd(args.ip, args.user, args.command)
 	else:
 		sys.exit(1)
 
