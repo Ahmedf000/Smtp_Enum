@@ -17,7 +17,7 @@ class Crypter:
 		return self.cipher.encrypt(pad(plaintext, AES.block_size)).hex()
 
 	def decrypt(self, encrypted):
-		return self.cipher.decrypt(bytearray.fromhex(encrypted), AES.block_size)
+		return unpad(self.cipher.decrypt(bytearray.fromhex(encrypted)), AES.block_size)
 
 	def __str__(self):
 		return "The key => {}".format(self.key.hex())
@@ -46,7 +46,7 @@ def enum_smtp_banner(ip):
 def send_cmd(ip, user, command):
 	# the user is from the whoever uses script !!
 	lw = (command.upper()).encode()
-	if lw != 'VRFY' or lw != 'EXPN':
+	if lw not in (b'VRFY', b'EXPN'):
 		print("Your have 2 options commands to use (VRFY/EXPN)")
 		sys.exit(1)
 
